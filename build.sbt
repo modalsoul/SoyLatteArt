@@ -1,6 +1,6 @@
-sbtPlugin := true
-
 name := "SoyLatteArt"
+
+sbtPlugin := true
 
 organization := "jp.modal.soul"
 
@@ -18,7 +18,7 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.12.1" % "test" withSources() withJavadoc()
 )
 
-initialCommands := "import jp.modal.soul.soylatteart._"
+initialCommands := "import jp.modal.soul.soylatteart.SoyLatteArtPlugin._"
 
 unmanagedJars in Compile ~= {uj =>
   Seq(Attributed.blank(file(System.getProperty("java.home").dropRight(3)+"lib/tools.jar"))) ++ uj
