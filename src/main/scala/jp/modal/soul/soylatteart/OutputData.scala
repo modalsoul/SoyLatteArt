@@ -36,7 +36,9 @@ object OutputData {
   }
 
   private def parseSamplingData(samplingData:SamplingData):mutable.Map[String, Object] = {
-    new java.util.LinkedHashMap[String, Object]().putAll(parseAttributes(samplingData.attributes))
+    val hashMap = new java.util.LinkedHashMap[String, Object]()
+    hashMap.putAll(parseAttributes(samplingData.attributes))
+    hashMap
   }
 
   private def parseObjectName(objectName:ObjectName):mutable.Map[String, Object] = {
@@ -54,7 +56,7 @@ object OutputData {
         attribute.getValue match {
           case value:CompositeDataSupport =>
             map.putAll(parseCompositeDataSupport(value))
-          case value:_ =>
+          case value:Any =>
             map.put(attribute.getName, value)
         }
     }
@@ -69,7 +71,7 @@ object OutputData {
         compositeDataSupport.get(key) match {
           case value:CompositeDataSupport =>
             map.put(key, value)
-          case value:_ =>
+          case value:Any =>
             map.putAll(parseCompositeDataSupport(value.asInstanceOf[CompositeDataSupport]))
         }
     }

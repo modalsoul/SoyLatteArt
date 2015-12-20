@@ -1,0 +1,11 @@
+{
+  "queries" : [
+    // Memory Pool
+    {
+      "query" : "java.lang:type=MemoryPool,*",
+      "attributeNames" : [
+        "Usage"
+      ]
+    }
+  ]
+}

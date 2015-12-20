@@ -24,12 +24,12 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
           try {
             new JMXServer(jmxConnector.getMBeanServerConnection)
           } catch {
-            case e:_ =>
+            case e:Exception =>
               throw new RuntimeException(e)
           }
       }.get
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -40,7 +40,7 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
     try {
       Option(virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)).getOrElse(loadAgent(virtualMachine))
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -54,7 +54,7 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
       virtualMachine.loadAgent(agent)
       virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }

@@ -1,12 +1,11 @@
 package jp.modal.soul.soylatteart
 
-import java.io.IOException
 import javax.management._
 
 import org.slf4j.LoggerFactory
 
-import collection._
-import collection.JavaConversions._
+import scala.collection.JavaConversions._
+import scala.collection._
 
 /**
  * Created by imae on 2015/12/17.
@@ -16,7 +15,7 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
     try {
       mBeanServerConnection.queryNames(new ObjectName("*:"), null)
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -26,7 +25,7 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
       val mBeanInfo = mBeanServerConnection.getMBeanInfo(new ObjectName(objectName))
       mBeanInfo.getAttributes.filter(_.isReadable).toSet
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -42,7 +41,7 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
         objectName =>Target(objectName, query.attributeNames)
       }.toSeq
     } catch {
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -55,7 +54,7 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
         SamplingData(target.objectName, e)
       case e:ScalaReflectionException =>
         SamplingData(target.objectName, e)
-      case e:_ =>
+      case e:Exception =>
         throw new RuntimeException(e)
     }
   }
