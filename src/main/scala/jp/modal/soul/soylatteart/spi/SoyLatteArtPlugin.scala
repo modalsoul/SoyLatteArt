@@ -7,9 +7,9 @@ import Keys._
 /**
  * Created by imaemasatoshi on 2015/12/17.
  */
-object SoyLatteArtPlugin extends AutoPlugin {
-  override lazy val projectSettings = Seq(
-    commands += latteArt
+object SoyLatteArtPlugin extends Plugin {
+  override lazy val settings = Seq(
+    commands ++= Seq(latteArt)
   )
   def latteArt = Command.args("latteart", "<args>") { (state, args) =>
     SoyLatteArt.execute(args)
