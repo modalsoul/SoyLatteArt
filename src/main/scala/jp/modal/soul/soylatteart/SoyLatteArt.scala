@@ -2,15 +2,24 @@ package jp.modal.soul.soylatteart
 
 import java.util.concurrent.{Executors, TimeUnit}
 
-import org.apache.commons.cli.CommandLine
+import org.apache.commons.cli.{HelpFormatter, DefaultParser, Options, CommandLine}
 
 /**
  * Created by imae on 2015/12/17.
  */
 object SoyLatteArt {
+  val options = new Options
+  options.addOption("h", "help", false, "print this message.")
+  options.addOption("l", "list", false, "print all MBean name list.")
+  options.addOption("a", "attr", true, "print all readable attribute name list.")
+  options.addOption("c", "config", true, "config json file url.")
+  options.addOption("i", "interval", true, "interval second")
+
   val scheduler = Executors.newScheduledThreadPool(1)
 
-  def execute(commandLine: CommandLine): Unit = {
+  def execute(args:Seq[String]): Unit = {
+    val commandLine = new DefaultParser().parse(options, args.toArray, true)
+    if (commandLine.hasOption('h') || commandLine.getArgs.length <= 0) new HelpFormatter().printHelp("latteart [Options ...] pid", options)
 
     val jmxServerBuilder = JMXServerBuilder.getInstance(commandLine.getArgs():_*)
     val jmxServer = jmxServerBuilder.createJMXServer
