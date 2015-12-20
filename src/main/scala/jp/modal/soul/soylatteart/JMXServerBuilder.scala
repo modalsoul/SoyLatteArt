@@ -11,6 +11,6 @@ trait JMXServerBuilder {
 
 object JMXServerBuilder {
   def getInstance(args:String*):JMXServerBuilder = {
-    new LocalJMXServerBuilder(args(1))
+    new LocalJMXServerBuilder(args(0))
   }
 }
