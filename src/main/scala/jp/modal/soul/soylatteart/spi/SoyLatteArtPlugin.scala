@@ -1,6 +1,5 @@
-package jp.modal.soul.soylatteart.spi
+package jp.modal.soul.soylatteart
 
-import jp.modal.soul.soylatteart.SoyLatteArt
 import sbt._
 import Keys._
 

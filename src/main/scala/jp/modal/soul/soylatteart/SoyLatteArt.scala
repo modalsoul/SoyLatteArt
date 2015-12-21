@@ -2,7 +2,7 @@ package jp.modal.soul.soylatteart
 
 import java.util.concurrent.{Executors, TimeUnit}
 
-import org.apache.commons.cli.{HelpFormatter, DefaultParser, Options, CommandLine}
+import org.apache.commons.cli.{DefaultParser, HelpFormatter, Options}
 
 /**
  * Created by imae on 2015/12/17.
