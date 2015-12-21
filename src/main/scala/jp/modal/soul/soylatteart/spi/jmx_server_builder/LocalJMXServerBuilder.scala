@@ -52,7 +52,7 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
       val systemProperties = virtualMachine.getSystemProperties
 
       val javaHome = systemProperties.getProperty("java.home")
-      val agent = String.join(File.separator, javaHome, "jre/lib", "management-agent.jar")
+      val agent = String.join(File.separator, javaHome, "jre", "lib", "management-agent.jar")
       virtualMachine.loadAgent(agent)
       virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)
     } catch {

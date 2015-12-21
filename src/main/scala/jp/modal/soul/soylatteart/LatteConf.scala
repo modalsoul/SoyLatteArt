@@ -13,7 +13,7 @@ import play.api.libs.json.Json
 class LatteConf(val queries:QueryList, val outputs:List[Output])
 
 object LatteConf {
-  def load(path:String = "./monitor.json"):Option[LatteConf] = {
+  def load(path:String = "./conf/monitor.json"):Option[LatteConf] = {
     try {
       var ql:QueryList = null
       for(is <- Loan(new URL(path).openStream())) {

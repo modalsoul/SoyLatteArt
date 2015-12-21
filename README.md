@@ -1,8 +1,13 @@
 SoyLatteArt
 ===
 
-SoyLatteArt is [sbt](https://github.com/sbt/sbt) command for monitoring JavaVM.
+SoyLatteArt is [sbt](https://github.com/sbt/sbt) command for monitoring JavaVM using [JMX(Java Management eXtentions)](http://www.oracle.com/technetwork/articles/java/javamanagement-140525.html).
 SoyLatteArt is Scala implementation of [LatteArt](https://github.com/tkajita/latteart) by [tkajita](https://github.com/tkajita).
+
+Features
+------------
+* Collect JavaVM status.
+* Output JavaVM status as [LTSV](http://ltsv.org/) format.
 
 Requirements
 ------------
@@ -40,8 +45,10 @@ addSbtPlugin("jp.modal.soul" % "soylatteart" % "0.1-SNAPSHOT")
 ```
 
 ## Configuration
+You can configure monitoring using json.
+Default configuration file name is `monitor.json`.
 
-### monitor.json
+### conf/monitor.json
 
 Sample: Get memory info at five-minute intervals.
 
@@ -59,12 +66,17 @@ Sample: Get memory info at five-minute intervals.
 }
 ```
 
+For more details, see [LatteArt configuration](https://github.com/tkajita/latteart#confmonitorjson-ファイル).
+
 ## Usage
 
 ```bash
 sbt
 > latteart <pid>
 ```
+
+`<pid>` is monitoring target JavaVM process ID.
+You can find PID using [jps](http://docs.oracle.com/javase/7/docs/technotes/tools/share/jps.html) command.
 
 ### Options
 
