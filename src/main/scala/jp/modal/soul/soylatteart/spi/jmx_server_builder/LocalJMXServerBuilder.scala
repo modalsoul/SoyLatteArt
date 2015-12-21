@@ -16,7 +16,9 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
 
     try {
       virtualMachine = VirtualMachine.attach(pid)
+
       val connectorAddress = getConnectorAddress(virtualMachine)
+
       val jmxServiceURL = new JMXServiceURL(connectorAddress)
 
       Option(JMXConnectorFactory.connect(jmxServiceURL)).map {
@@ -50,7 +52,7 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
       val systemProperties = virtualMachine.getSystemProperties
 
       val javaHome = systemProperties.getProperty("java.home")
-      val agent = String.join(File.separator, javaHome, "lib", "management-agent.jar")
+      val agent = String.join(File.separator, javaHome, "jre/lib", "management-agent.jar")
       virtualMachine.loadAgent(agent)
       virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)
     } catch {
