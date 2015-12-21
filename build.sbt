@@ -19,7 +19,3 @@ libraryDependencies ++= Seq(
 )
 
 initialCommands := "import jp.modal.soul.soylatteart.SoyLatteArtPlugin._"
-
-unmanagedJars in Compile ~= {uj =>
-  Seq(Attributed.blank(file(System.getProperty("java.home").dropRight(3)+"lib/tools.jar"))) ++ uj
-}
