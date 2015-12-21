@@ -39,6 +39,25 @@ Add lines to your `project/plugins.sbt`
 addSbtPlugin("jp.modal.soul" % "soylatteart" % "0.1-SNAPSHOT")
 ```
 
+## Configuration
+
+### monitor.json
+
+Sample: Get memory info at five-minute intervals.
+
+```monitor.json
+{
+  "queries" : [
+    // Memory Pool
+    {
+      "query" : "java.lang:type=MemoryPool,*",
+      "attributeNames" : [
+        "Usage"
+      ]
+    }
+  ]
+}
+```
 
 ## Usage
 
@@ -49,7 +68,7 @@ sbt
 
 ### Options
 
-| Option        |               |
+| Option        | notes         |
 | ------------- | ------------- |
 | -h            | show help.    |
 | -m            | show all MBean ObjectName |
