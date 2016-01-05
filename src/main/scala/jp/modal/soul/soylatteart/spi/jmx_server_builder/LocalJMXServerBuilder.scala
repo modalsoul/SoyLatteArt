@@ -1,18 +1,18 @@
 package jp.modal.soul.soylatteart.spi.jmx_server_builder
 
 import java.io.File
-import javax.management.remote.{JMXConnectorFactory, JMXServiceURL}
+import javax.management.remote.{ JMXConnectorFactory, JMXServiceURL }
 
 import com.sun.tools.attach.VirtualMachine
-import jp.modal.soul.soylatteart.{JMXServer, JMXServerBuilder}
+import jp.modal.soul.soylatteart.{ JMXServer, JMXServerBuilder }
 
 /**
  * Created by imae on 2015/12/17.
  */
-class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
+class LocalJMXServerBuilder(val pid: String) extends JMXServerBuilder {
 
-  override def createJMXServer:JMXServer = {
-    var virtualMachine:VirtualMachine = null
+  override def createJMXServer: JMXServer = {
+    var virtualMachine: VirtualMachine = null
 
     try {
       virtualMachine = VirtualMachine.attach(pid)
@@ -26,28 +26,28 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
           try {
             new JMXServer(jmxConnector.getMBeanServerConnection)
           } catch {
-            case e:Exception =>
+            case e: Exception =>
               throw new RuntimeException(e)
           }
       }.get
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }
 
   final val LOCAL_CONNECTOR_ADDR = "com.sun.management.jmxremote.localConnectorAddress"
 
-  private def getConnectorAddress(virtualMachine:VirtualMachine):String = {
+  private def getConnectorAddress(virtualMachine: VirtualMachine): String = {
     try {
       Option(virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)).getOrElse(loadAgent(virtualMachine))
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }
 
-  private def loadAgent(virtualMachine: VirtualMachine):String = {
+  private def loadAgent(virtualMachine: VirtualMachine): String = {
     try {
       val systemProperties = virtualMachine.getSystemProperties
 
@@ -56,7 +56,7 @@ class LocalJMXServerBuilder(val pid:String) extends JMXServerBuilder {
       virtualMachine.loadAgent(agent)
       virtualMachine.getAgentProperties.getProperty(LOCAL_CONNECTOR_ADDR)
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }

@@ -1,8 +1,8 @@
 package jp.modal.soul.soylatteart
 
-import java.util.concurrent.{Executors, TimeUnit}
+import java.util.concurrent.{ Executors, TimeUnit }
 
-import org.apache.commons.cli.{DefaultParser, HelpFormatter, Options}
+import org.apache.commons.cli.{ DefaultParser, HelpFormatter, Options }
 
 /**
  * Created by imae on 2015/12/17.
@@ -17,14 +17,14 @@ object SoyLatteArt {
 
   val scheduler = Executors.newScheduledThreadPool(1)
 
-  def execute(args:Seq[String]): Unit = {
+  def execute(args: Seq[String]): Unit = {
     val commandLine = new DefaultParser().parse(options, args.toArray, true)
     if (commandLine.hasOption('h') || commandLine.getArgs.length <= 0) new HelpFormatter().printHelp("latteart [Options ...] pid", options)
 
-    val jmxServerBuilder = JMXServerBuilder.getInstance(commandLine.getArgs():_*)
+    val jmxServerBuilder = JMXServerBuilder.getInstance(commandLine.getArgs(): _*)
     val jmxServer = jmxServerBuilder.createJMXServer
 
-    if(commandLine.hasOption('l')) printObjectNameList(jmxServer)
+    if (commandLine.hasOption('l')) printObjectNameList(jmxServer)
 
     Option(commandLine.getOptionValue('a')).foreach(printReadableAttributeList(jmxServer))
 
@@ -34,24 +34,25 @@ object SoyLatteArt {
       val monitoringService = MonitoringService(jmxServer, conf.queries, conf.outputs)
       val interval = commandLine.getOptionValue('i').map(_.toLong)
 
-      if(interval.isEmpty) monitoringService.run
+      if (interval.isEmpty) monitoringService.run
       else {
-        scheduler.scheduleAtFixedRate(new Runnable {
+        scheduler.scheduleAtFixedRate(
+          new Runnable {
           override def run(): Unit = monitoringService.run
         },
-        0L,
-        interval.head,
-        TimeUnit.SECONDS
+          0L,
+          interval.head,
+          TimeUnit.SECONDS
         )
       }
     }
   }
 
-  private def printObjectNameList(jMXServer: JMXServer): Unit ={
+  private def printObjectNameList(jMXServer: JMXServer): Unit = {
     jMXServer.findAllObjectName.map(_.getCanonicalName).toSeq.sorted.foreach(println)
   }
 
-  private def printReadableAttributeList(jMXServer: JMXServer)(objectName:String): Unit = {
+  private def printReadableAttributeList(jMXServer: JMXServer)(objectName: String): Unit = {
     jMXServer.findReadableAttributeInfoByObjectName(objectName).map(
       attributeInfo =>
         s"${attributeInfo.getName} <type:${attributeInfo.getType}>"

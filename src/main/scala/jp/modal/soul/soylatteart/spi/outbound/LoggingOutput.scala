@@ -1,6 +1,6 @@
 package jp.modal.soul.soylatteart.spi.outbound
 
-import jp.modal.soul.soylatteart.{OutputData, Output}
+import jp.modal.soul.soylatteart.{ OutputData, Output }
 import org.slf4j.LoggerFactory
 
 /**

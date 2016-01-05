@@ -10,22 +10,22 @@ import scala.collection._
 /**
  * Created by imae on 2015/12/17.
  */
-case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Directory with Monitor{
-  def findAllObjectName:Set[ObjectName] = {
+case class JMXServer(mBeanServerConnection: MBeanServerConnection) extends Directory with Monitor {
+  def findAllObjectName: Set[ObjectName] = {
     try {
       mBeanServerConnection.queryNames(new ObjectName("*:"), null)
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }
 
-  def findReadableAttributeInfoByObjectName(objectName:String):Set[MBeanAttributeInfo] = {
+  def findReadableAttributeInfoByObjectName(objectName: String): Set[MBeanAttributeInfo] = {
     try {
       val mBeanInfo = mBeanServerConnection.getMBeanInfo(new ObjectName(objectName))
       mBeanInfo.getAttributes.filter(_.isReadable).toSet
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -38,10 +38,10 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
       logger.info(s"size:${on.size}")
 
       mBeanServerConnection.queryNames(new ObjectName(query.query), null).map {
-        objectName =>Target(objectName, query.attributeNames)
+        objectName => Target(objectName, query.attributeNames)
       }.toSeq
     } catch {
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }
@@ -50,11 +50,11 @@ case class JMXServer(mBeanServerConnection:MBeanServerConnection) extends Direct
     try {
       SamplingData(target.objectName, mBeanServerConnection.getAttributes(target.objectName, target.attributeNames.toArray))
     } catch {
-      case e:InstanceNotFoundException =>
+      case e: InstanceNotFoundException =>
         SamplingData(target.objectName, e)
-      case e:ScalaReflectionException =>
+      case e: ScalaReflectionException =>
         SamplingData(target.objectName, e)
-      case e:Exception =>
+      case e: Exception =>
         throw new RuntimeException(e)
     }
   }

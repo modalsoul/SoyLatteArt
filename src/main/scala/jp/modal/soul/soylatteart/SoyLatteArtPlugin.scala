@@ -1,7 +1,7 @@
 package jp.modal.soul.soylatteart
 
+import sbt.Keys._
 import sbt._
-import Keys._
 
 /**
  * Created by imaemasatoshi on 2015/12/17.
