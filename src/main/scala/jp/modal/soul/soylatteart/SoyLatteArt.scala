@@ -22,28 +22,24 @@ object SoyLatteArt {
     if (commandLine.hasOption('h') || commandLine.getArgs.length <= 0) new HelpFormatter().printHelp("latteart [Options ...] pid", options)
 
     val jmxServerBuilder = JMXServerBuilder.getInstance(commandLine.getArgs(): _*)
-    val jmxServer = jmxServerBuilder.createJMXServer
 
-    if (commandLine.hasOption('l')) printObjectNameList(jmxServer)
+    jmxServerBuilder.createJMXServer.foreach { jmxServer =>
+      if (commandLine.hasOption('l')) printObjectNameList(jmxServer)
+      Option(commandLine.getOptionValue('a')).foreach(printReadableAttributeList(jmxServer))
+      val confOpt = Option(commandLine.getOptionValue('c')).map(LatteConf.load).getOrElse(LatteConf.load())
 
-    Option(commandLine.getOptionValue('a')).foreach(printReadableAttributeList(jmxServer))
-
-    val confOpt = Option(commandLine.getOptionValue('c')).map(LatteConf.load).getOrElse(LatteConf.load())
-
-    confOpt.foreach { conf =>
-      val monitoringService = MonitoringService(jmxServer, conf.queries, conf.outputs)
-      val interval = commandLine.getOptionValue('i').map(_.toLong)
-
-      if (interval.isEmpty) monitoringService.run
-      else {
-        scheduler.scheduleAtFixedRate(
-          new Runnable {
-          override def run(): Unit = monitoringService.run
-        },
-          0L,
-          interval.head,
-          TimeUnit.SECONDS
-        )
+      confOpt.foreach { conf =>
+        val monitoringService = MonitoringService(jmxServer, conf.queries, conf.outputs)
+        val interval = commandLine.getOptionValue('i').map(_.toLong)
+        if (interval.isEmpty) monitoringService.run
+        else {
+          scheduler.scheduleAtFixedRate(
+            new Runnable { override def run(): Unit = monitoringService.run },
+            0L,
+            interval.head,
+            TimeUnit.SECONDS
+          )
+        }
       }
     }
   }

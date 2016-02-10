@@ -6,7 +6,7 @@ import jp.modal.soul.soylatteart.spi.jmx_server_builder.LocalJMXServerBuilder
  * Created by imae on 2015/12/17.
  */
 trait JMXServerBuilder {
-  def createJMXServer: JMXServer
+  def createJMXServer: Option[JMXServer]
 }
 
 object JMXServerBuilder {
