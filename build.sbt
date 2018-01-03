@@ -4,7 +4,7 @@ sbtPlugin := true
 
 organization := "jp.modal.soul"
 
-version := "0.2"
+version := "0.2-SNAPSHOT"
 
 scalaVersion := "2.12.4"
 
@@ -19,3 +19,13 @@ libraryDependencies ++= Seq(
 )
 
 initialCommands := "import jp.modal.soul.soylatteart.SoyLatteArtPlugin._"
+
+lazy val root = (project in file(".")).
+  settings(
+    name := "sbt-latteart",
+    version := "0.2.0",
+    organization := "jp.modal.soul",
+    scalaVersion := "2.12.4",
+    sbtPlugin := true,
+    sbtVersion := "1.0.4"
+  )

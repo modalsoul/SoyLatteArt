@@ -37,8 +37,7 @@ object SoyLatteArt {
             new Runnable { override def run(): Unit = monitoringService.run },
             0L,
             interval.head,
-            TimeUnit.SECONDS
-          )
+            TimeUnit.SECONDS)
         }
       }
     }
@@ -51,7 +50,6 @@ object SoyLatteArt {
   private def printReadableAttributeList(jMXServer: JMXServer)(objectName: String): Unit = {
     jMXServer.findReadableAttributeInfoByObjectName(objectName).map(
       attributeInfo =>
-        s"${attributeInfo.getName} <type:${attributeInfo.getType}>"
-    ).seq.foreach(println)
+        s"${attributeInfo.getName} <type:${attributeInfo.getType}>").seq.foreach(println)
   }
 }

@@ -30,8 +30,7 @@ object OutputData {
   def apply(samplingTime: ZonedDateTime, hostname: String, samplingDate: SamplingData): OutputData = {
     val map = Map[String, Object](
       SAMPLING_TIME_KEY -> samplingTime.format(dateTimeformatter),
-      HOSTNAME_KEY -> hostname
-    )
+      HOSTNAME_KEY -> hostname)
     new OutputData(map ++: parseSamplingData(samplingDate))
   }
 
